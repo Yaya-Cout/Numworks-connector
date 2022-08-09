@@ -1,7 +1,8 @@
 <template>
-  <div class="home">
-    <h1>Numworks Connector</h1>
-  </div>
+  <nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link>
+  </nav>
 </template>
 
 <script>
@@ -9,7 +10,7 @@ import { defineComponent } from "vue";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({
-  name: "HomeView",
+  name: "NavbarComponent",
   setup() {
     const { t } = useI18n({
       inheritLocale: true,
