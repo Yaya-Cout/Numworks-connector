@@ -1,3 +1,13 @@
 {
-  "message": "hello i18n !!"
+  "home": {
+    "title": "Numworks connector",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "delete": "Delete"
+  },
+  "about": {
+    "title": "About",
+    "description": "The Numworks connector is a web application that allows you to manage your Numworks from your browser.",
+    "github": "GitHub"
+  }
 }

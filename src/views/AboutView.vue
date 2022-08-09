@@ -1,6 +1,11 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <!-- <h1>This is an about page</h1> -->
+    <h1>{{ t("about.title") }}</h1>
+    <p>{{ t("about.description") }}</p>
+    <a href="https://github.com/Yaya-Cout/Numworks-connector">{{
+      t("about.github")
+    }}</a>
   </div>
 </template>
 

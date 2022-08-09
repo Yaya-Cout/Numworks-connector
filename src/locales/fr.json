@@ -1,0 +1,13 @@
+{
+  "home": {
+    "connect": "Connecter",
+    "delete": "Supprimer",
+    "disconnect": "Déconnecter",
+    "title": "Connecteur NumWorks"
+  },
+  "about": {
+    "github": "GitHub",
+    "description": "Le connecteur Numworks est une application web qui permet de gérer votre Numworks depuis votre navigateur Web",
+    "title": "À propos"
+  }
+}

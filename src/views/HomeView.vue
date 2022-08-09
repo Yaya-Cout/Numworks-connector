@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <h1>Numworks Connector</h1>
-    <button v-if="!connected" @click="connect">Connect</button>
-    <button v-else @click="disconnect">Disconnect</button>
+    <h1>{{ t("home.title") }}</h1>
+    <button v-if="!connected" @click="connect">{{ t("home.connect") }}</button>
+    <button v-else @click="disconnect">{{ t("home.disconnect") }}</button>
     <div v-if="connected">
       <div
         v-for="(record, index) in storage['records']"
@@ -11,7 +11,7 @@
       >
         <div>
           <span>{{ record.name + "." + record.type }}</span>
-          <button @click="deleteRecord(index)">Delete</button>
+          <button @click="deleteRecord(index)">{{ $t("home.delete") }}</button>
         </div>
       </div>
     </div>
