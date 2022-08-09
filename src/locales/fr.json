@@ -3,11 +3,16 @@
     "connect": "Connecter",
     "delete": "Supprimer",
     "disconnect": "Déconnecter",
-    "title": "Connecteur NumWorks"
+    "title": "Connecteur NumWorks",
   },
   "about": {
     "github": "GitHub",
     "description": "Le connecteur Numworks est une application web qui permet de gérer votre Numworks depuis votre navigateur Web",
     "title": "À propos"
+  },
+  "error": {
+    "error": "Erreur : ",
+    "unknown": "Une erreur inconnue est survenue",
+    "no-usb": "Votre navigateur ne supporte pas le WebUSB, veuillez utiliser un navigateur basé sur Chromium à la place."
   }
 }

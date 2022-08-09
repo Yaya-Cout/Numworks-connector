@@ -1,7 +1,12 @@
 <template>
   <div class="home">
     <h1>{{ t("home.title") }}</h1>
-    <button v-if="!connected" @click="connect">{{ t("home.connect") }}</button>
+    <div v-if="error" class="error">
+      {{ t("error.error") + t("error." + error) }}
+    </div>
+    <button v-if="!connected" @click="connect">
+      {{ t("home.connect") }}
+    </button>
     <button v-else @click="disconnect">{{ t("home.disconnect") }}</button>
     <div v-if="connected">
       <div
@@ -11,7 +16,9 @@
       >
         <div>
           <span>{{ record.name + "." + record.type }}</span>
-          <button @click="deleteRecord(index)">{{ $t("home.delete") }}</button>
+          <button @click="deleteRecord(index)">
+            {{ $t("home.delete") }}
+          </button>
         </div>
       </div>
     </div>
@@ -37,9 +44,15 @@ export default defineComponent({
       calculator: new Numworks(),
       connected: false,
       storage: {},
+      hasUSB: navigator.usb != null,
+      error: "",
     };
   },
   mounted() {
+    if (!this.hasUSB) {
+      this.errorHandler("no-usb");
+      return;
+    }
     this.calculator.autoConnect(this.connectedHandler);
     const _this = this;
     navigator.usb.addEventListener("disconnect", function (e) {
@@ -75,6 +88,7 @@ export default defineComponent({
     },
     errorHandler(error) {
       console.error(error);
+      this.error = error;
     },
     async saveStorage() {
       this.storage = await this.calculator.backupStorage(function (data) {

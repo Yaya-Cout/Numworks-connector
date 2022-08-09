@@ -9,5 +9,10 @@
     "title": "About",
     "description": "The Numworks connector is a web application that allows you to manage your Numworks from your browser.",
     "github": "GitHub"
+  },
+  "error": {
+    "error": "Error :",
+    "unknown": "An unknown error has occurred.",
+    "no-usb": "Your browser does not support WebUSB, please use a Chromium-based browser instead."
   }
 }
