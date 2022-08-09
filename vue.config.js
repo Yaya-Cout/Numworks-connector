@@ -17,4 +17,6 @@ module.exports = defineConfig({
       fullInstall: true,
     },
   },
+  publicPath:
+    process.env.NODE_ENV === "production" ? "/Numworks-connector/" : "/",
 });
