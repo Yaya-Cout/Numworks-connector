@@ -1,12 +1,27 @@
 <template>
   <div class="home">
     <h1>Numworks Connector</h1>
+    <button v-if="!connected" @click="connect">Connect</button>
+    <button v-else @click="disconnect">Disconnect</button>
+    <div v-if="connected">
+      <div
+        v-for="(record, index) in storage['records']"
+        :key="index"
+        class="recordList"
+      >
+        <div>
+          <span>{{ record.name + "." + record.type }}</span>
+          <button @click="deleteRecord(index)">Delete</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
 import { useI18n } from "vue-i18n";
+import Numworks from "upsilon.js";
 
 export default defineComponent({
   name: "HomeView",
@@ -16,6 +31,61 @@ export default defineComponent({
       useScope: "global",
     });
     return { t };
+  },
+  data() {
+    return {
+      calculator: new Numworks(),
+      connected: false,
+      storage: {},
+    };
+  },
+  mounted() {
+    this.calculator.autoConnect(this.connectedHandler);
+    const _this = this;
+    navigator.usb.addEventListener("disconnect", function (e) {
+      _this.calculator.onUnexpectedDisconnect(
+        e,
+        _this.unexpectedDisconnectHandler
+      );
+    });
+  },
+  methods: {
+    connect() {
+      this.calculator.detect(this.connectedHandler, this.errorHandler);
+    },
+    disconnect(event) {
+      event.preventDefault();
+      this.calculator.device.device_.close();
+      this.calculator.stopAutoConnect();
+      this.disconnectedHandler();
+    },
+    async connectedHandler() {
+      console.log("connected");
+      this.connected = true;
+      await this.saveStorage();
+    },
+    disconnectedHandler() {
+      console.log("disconnected");
+      this.connected = false;
+    },
+    unexpectedDisconnectHandler() {
+      console.log("unexpected disconnect");
+      this.calculator.autoConnect(this.connectedHandler);
+      this.disconnectedHandler();
+    },
+    errorHandler(error) {
+      console.error(error);
+    },
+    async saveStorage() {
+      this.storage = await this.calculator.backupStorage(function (data) {
+        this.storage = data;
+      }, this.errorHandler);
+      console.log(this.storage);
+    },
+    async deleteRecord(index) {
+      this.storage.records.splice(index, 1);
+      await this.calculator.installStorage(this.storage, this.errorHandler);
+    },
   },
 });
 </script>
