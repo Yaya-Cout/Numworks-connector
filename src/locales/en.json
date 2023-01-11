@@ -8,7 +8,8 @@
     "rename-prompt": "Enter new name:",
     "download": "Download",
     "download-all": "Download all",
-    "records": "Files"
+    "records": "Files",
+    "upload": "Upload"
   },
   "about": {
     "title": "About",

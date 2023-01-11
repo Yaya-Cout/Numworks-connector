@@ -11,6 +11,9 @@
     <button v-if="connected" @click="downloadAll()">
       {{ $t("home.download-all") }}
     </button>
+    <button v-if="connected" @click="uploadFile()">
+      {{ $t("home.upload") }}
+    </button>
     <div v-if="connected">
       <h2>{{ $t("home.records") }}</h2>
       <div
@@ -141,6 +144,27 @@ export default defineComponent({
       link.href = window.URL.createObjectURL(blob);
       link.download = "backup.zip";
       link.click();
+    },
+    async uploadFile() {
+      const input = document.createElement("input");
+      input.type = "file";
+      // input.accept = ".py,.zip";
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        console.log(file);
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.addEventListener("load", async () => {
+          let code = reader.result;
+          const name = file.name.replace(/\.[^/.]+$/, "");
+          const type = file.name.split(".").pop();
+          this.storage.records.push({ name, type, code });
+          await this.calculator.installStorage(this.storage, function () {
+            console.log("Success");
+          });
+        });
+      };
+      input.click();
     },
   },
 });
