@@ -3,7 +3,9 @@
     "title": "Numworks connector",
     "connect": "Connect",
     "disconnect": "Disconnect",
-    "delete": "Delete"
+    "delete": "Delete",
+    "rename": "Rename",
+    "rename-prompt": "Enter new name:"
   },
   "about": {
     "title": "About",

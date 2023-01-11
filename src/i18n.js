@@ -25,7 +25,7 @@ function loadLocaleMessages() {
 
 export default createI18n({
   legacy: false,
-  locale: navigator.language.split("-")[0] || "en",
+  locale: "fr" || "en",
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || "en",
   messages: loadLocaleMessages(),
 });

@@ -9,6 +9,7 @@
     </button>
     <button v-else @click="disconnect">{{ t("home.disconnect") }}</button>
     <div v-if="connected">
+      <button @click="newFile">{{}}</button>
       <div
         v-for="(record, index) in storage['records']"
         :key="index"
@@ -18,6 +19,9 @@
           <span>{{ record.name + "." + record.type }}</span>
           <button @click="deleteRecord(index)">
             {{ $t("home.delete") }}
+          </button>
+          <button @click="renameRecord(index)">
+            {{ $t("home.rename") }}
           </button>
         </div>
       </div>
@@ -91,6 +95,7 @@ export default defineComponent({
       this.error = error;
     },
     async saveStorage() {
+      // Get the platform Info
       this.storage = await this.calculator.backupStorage(function (data) {
         this.storage = data;
       }, this.errorHandler);
@@ -99,6 +104,14 @@ export default defineComponent({
     async deleteRecord(index) {
       this.storage.records.splice(index, 1);
       await this.calculator.installStorage(this.storage, this.errorHandler);
+    },
+    async renameRecord(index) {
+      const record = this.storage.records[index];
+      const name = prompt(this.t("home.rename-prompt"), record.name);
+      if (name) {
+        record.name = name;
+        await this.calculator.installStorage(this.storage, this.errorHandler);
+      }
     },
   },
 });

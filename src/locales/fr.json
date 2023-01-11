@@ -4,6 +4,8 @@
     "delete": "Supprimer",
     "disconnect": "Déconnecter",
     "title": "Connecteur NumWorks",
+    "rename": "Renommer",
+    "rename-prompt": "Entrez le nouveau nom :"
   },
   "about": {
     "github": "GitHub",
