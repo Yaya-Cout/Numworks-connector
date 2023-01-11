@@ -11,7 +11,7 @@
     <button v-if="connected" @click="downloadAll()">
       {{ $t("home.download-all") }}
     </button>
-    <button v-if="connected" @click="uploadFile()">
+    <button v-if="connected" @click="upload()">
       {{ $t("home.upload") }}
     </button>
     <div v-if="connected">
@@ -111,14 +111,18 @@ export default defineComponent({
     },
     async deleteRecord(index) {
       this.storage.records.splice(index, 1);
-      await this.calculator.installStorage(this.storage, this.errorHandler);
+      await this.calculator.installStorage(this.storage, function () {
+        console.log("Success");
+      });
     },
     async renameRecord(index) {
       const record = this.storage.records[index];
       const name = prompt(this.t("home.rename-prompt"), record.name);
       if (name) {
         record.name = name;
-        await this.calculator.installStorage(this.storage, this.errorHandler);
+        await this.calculator.installStorage(this.storage, function () {
+          console.log("Success");
+        });
       }
     },
     async downloadRecord(index) {
@@ -145,26 +149,53 @@ export default defineComponent({
       link.download = "backup.zip";
       link.click();
     },
-    async uploadFile() {
+    async upload() {
       const input = document.createElement("input");
       input.type = "file";
       // input.accept = ".py,.zip";
       input.onchange = (e) => {
-        const file = e.target.files[0];
-        console.log(file);
-        const reader = new FileReader();
-        reader.readAsText(file);
-        reader.addEventListener("load", async () => {
-          let code = reader.result;
-          const name = file.name.replace(/\.[^/.]+$/, "");
-          const type = file.name.split(".").pop();
-          this.storage.records.push({ name, type, code });
-          await this.calculator.installStorage(this.storage, function () {
-            console.log("Success");
-          });
-        });
+        for (const file of e.target.files) {
+          // console.log(file.name);
+          // If file name ends with .zip, unzip it
+          if (file.name.endsWith(".zip")) {
+            this.uploadZip(file);
+          } else {
+            this.uploadFile(file);
+          }
+        }
       };
       input.click();
+    },
+    async uploadFile(file) {
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.addEventListener("load", async () => {
+        let code = reader.result;
+        const name = file.name.replace(/\.[^/.]+$/, "");
+        const type = file.name.split(".").pop();
+        this.storage.records.push({ name, type, code });
+        await this.calculator.installStorage(this.storage, function () {
+          console.log("Success");
+        });
+      });
+    },
+    async uploadZip(file) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.addEventListener("load", async () => {
+        const zip = await JSZip.loadAsync(reader.result);
+        for (const [name, file] of Object.entries(zip.files)) {
+          const code = await file.async("string");
+          const type = name.split(".").pop();
+          const nameWithoutExtension = name.replace(/\.[^/.]+$/, "");
+          this.storage.records.push({ name: nameWithoutExtension, type, code });
+          console.log(this.storage);
+          console.log(nameWithoutExtension, type, code);
+        }
+        await this.calculator.installStorage(this.storage, function () {
+          console.log("Success");
+        });
+      });
     },
   },
 });
