@@ -6,7 +6,9 @@
     "title": "Connecteur NumWorks",
     "rename": "Renommer",
     "rename-prompt": "Entrez le nouveau nom :",
-    "download": "Télécharger"
+    "download": "Télécharger",
+    "download-all": "Tout télécharger",
+    "records": "Fichiers"
   },
   "about": {
     "github": "GitHub",

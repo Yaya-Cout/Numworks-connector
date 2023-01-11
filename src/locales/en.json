@@ -6,7 +6,9 @@
     "delete": "Delete",
     "rename": "Rename",
     "rename-prompt": "Enter new name:",
-    "download": "Download"
+    "download": "Download",
+    "download-all": "Download all",
+    "records": "Files"
   },
   "about": {
     "title": "About",

@@ -8,25 +8,26 @@
       {{ t("home.connect") }}
     </button>
     <button v-else @click="disconnect">{{ t("home.disconnect") }}</button>
+    <button v-if="connected" @click="downloadAll()">
+      {{ $t("home.download-all") }}
+    </button>
     <div v-if="connected">
-      <button @click="newFile">{{}}</button>
+      <h2>{{ $t("home.records") }}</h2>
       <div
         v-for="(record, index) in storage['records']"
         :key="index"
         class="recordList"
       >
-        <div>
-          <span>{{ record.name + "." + record.type }}</span>
-          <button @click="renameRecord(index)">
-            {{ $t("home.rename") }}
-          </button>
-          <button @click="downloadRecord(index)">
-            {{ $t("home.download") }}
-          </button>
-          <button @click="deleteRecord(index)">
-            {{ $t("home.delete") }}
-          </button>
-        </div>
+        <span>{{ record.name + "." + record.type }}</span>
+        <button @click="renameRecord(index)">
+          {{ $t("home.rename") }}
+        </button>
+        <button @click="downloadRecord(index)">
+          {{ $t("home.download") }}
+        </button>
+        <button @click="deleteRecord(index)">
+          {{ $t("home.delete") }}
+        </button>
       </div>
     </div>
   </div>
@@ -36,6 +37,7 @@
 import { defineComponent } from "vue";
 import { useI18n } from "vue-i18n";
 import Numworks from "upsilon.js";
+import JSZip from "jszip";
 
 export default defineComponent({
   name: "HomeView",
@@ -127,6 +129,17 @@ export default defineComponent({
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = record.name + "." + record.type;
+      link.click();
+    },
+    async downloadAll() {
+      const zip = new JSZip();
+      for (const record of this.storage.records) {
+        zip.file(record.name + "." + record.type, record.code);
+      }
+      const blob = await zip.generateAsync({ type: "blob" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "backup.zip";
       link.click();
     },
   },
