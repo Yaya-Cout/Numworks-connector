@@ -5,7 +5,8 @@
     "disconnect": "Déconnecter",
     "title": "Connecteur NumWorks",
     "rename": "Renommer",
-    "rename-prompt": "Entrez le nouveau nom :"
+    "rename-prompt": "Entrez le nouveau nom :",
+    "download": "Télécharger"
   },
   "about": {
     "github": "GitHub",

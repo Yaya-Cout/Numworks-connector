@@ -5,7 +5,8 @@
     "disconnect": "Disconnect",
     "delete": "Delete",
     "rename": "Rename",
-    "rename-prompt": "Enter new name:"
+    "rename-prompt": "Enter new name:",
+    "download": "Download"
   },
   "about": {
     "title": "About",

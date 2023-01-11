@@ -17,11 +17,14 @@
       >
         <div>
           <span>{{ record.name + "." + record.type }}</span>
-          <button @click="deleteRecord(index)">
-            {{ $t("home.delete") }}
-          </button>
           <button @click="renameRecord(index)">
             {{ $t("home.rename") }}
+          </button>
+          <button @click="downloadRecord(index)">
+            {{ $t("home.download") }}
+          </button>
+          <button @click="deleteRecord(index)">
+            {{ $t("home.delete") }}
           </button>
         </div>
       </div>
@@ -112,6 +115,19 @@ export default defineComponent({
         record.name = name;
         await this.calculator.installStorage(this.storage, this.errorHandler);
       }
+    },
+    async downloadRecord(index) {
+      const record = this.storage.records[index];
+      // Download the file
+      const blob = new Blob([record.code], {
+        type: "application/octet-stream",
+      });
+
+      // Use the download attribute to download the file
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = record.name + "." + record.type;
+      link.click();
     },
   },
 });
