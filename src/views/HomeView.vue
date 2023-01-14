@@ -111,18 +111,18 @@ export default defineComponent({
     },
     async deleteRecord(index) {
       this.storage.records.splice(index, 1);
-      await this.calculator.installStorage(this.storage, function () {
-        console.log("Success");
-      });
+      await this.calculator.installStorage(this.storage, function () {});
+      console.log("Success");
+      await this.saveStorage();
     },
     async renameRecord(index) {
       const record = this.storage.records[index];
       const name = prompt(this.t("home.rename-prompt"), record.name);
       if (name) {
         record.name = name;
-        await this.calculator.installStorage(this.storage, function () {
-          console.log("Success");
-        });
+        await this.calculator.installStorage(this.storage, function () {});
+        console.log("Success");
+        await this.saveStorage();
       }
     },
     async downloadRecord(index) {
@@ -174,9 +174,9 @@ export default defineComponent({
         const name = file.name.replace(/\.[^/.]+$/, "");
         const type = file.name.split(".").pop();
         this.storage.records.push({ name, type, code });
-        await this.calculator.installStorage(this.storage, function () {
-          console.log("Success");
-        });
+        await this.calculator.installStorage(this.storage, function () {});
+        console.log("Success");
+        this.saveStorage();
       });
     },
     async uploadZip(file) {
@@ -192,9 +192,9 @@ export default defineComponent({
           console.log(this.storage);
           console.log(nameWithoutExtension, type, code);
         }
-        await this.calculator.installStorage(this.storage, function () {
-          console.log("Success");
-        });
+        await this.calculator.installStorage(this.storage, function () {});
+        console.log("Success");
+        this.saveStorage();
       });
     },
   },
