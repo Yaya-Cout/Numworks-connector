@@ -3,7 +3,7 @@
     "connect": "Connecter",
     "delete": "Supprimer",
     "disconnect": "Déconnecter",
-    "title": "Connecteur NumWorks",
+    "title": "Upsilon File Exchanger for NumWorks",
     "rename": "Renommer",
     "rename-prompt": "Entrez le nouveau nom :",
     "download": "Télécharger",
@@ -13,7 +13,7 @@
   },
   "about": {
     "github": "GitHub",
-    "description": "Le connecteur Numworks est une application web qui permet de gérer votre Numworks depuis votre navigateur Web",
+    "description": "Upsilon File Exchanger for NumWorks est une application web qui permet de gérer votre Numworks depuis votre navigateur Web",
     "title": "À propos"
   },
   "error": {
