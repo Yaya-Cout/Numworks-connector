@@ -16,6 +16,18 @@
     </button>
     <div v-if="connected">
       <h2>{{ $t("home.records") }}</h2>
+      <p>
+        {{
+          $t("home.size") +
+          " " +
+          size +
+          " / " +
+          totalSize +
+          " " +
+          $t("home.bytes")
+        }}
+        ({{ Math.round((size / totalSize) * 100) }}%)
+      </p>
       <div
         v-for="(record, index) in storage['records']"
         :key="index"
@@ -58,7 +70,19 @@ export default defineComponent({
       storage: {},
       hasUSB: navigator.usb != null,
       error: "",
+      totalSize: 0,
     };
+  },
+  computed: {
+    size() {
+      let size = 0;
+      for (const record of this.storage.records) {
+        if (record.type == "py") {
+          size += record.code.length;
+        }
+      }
+      return size;
+    },
   },
   mounted() {
     if (!this.hasUSB) {
@@ -88,6 +112,9 @@ export default defineComponent({
       console.log("connected");
       this.connected = true;
       await this.saveStorage();
+      this.platformInfo = await this.calculator.getPlatformInfo();
+      this.totalSize = this.platformInfo["storage"]["size"];
+      console.log(this.totalSize);
     },
     disconnectedHandler() {
       console.log("disconnected");

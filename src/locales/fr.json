@@ -9,7 +9,9 @@
     "download": "Télécharger",
     "download-all": "Tout télécharger",
     "records": "Fichiers",
-    "upload": "Envoyer"
+    "upload": "Envoyer",
+    "size": "Taille",
+    "bytes": "octets"
   },
   "about": {
     "github": "GitHub",

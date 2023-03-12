@@ -9,7 +9,9 @@
     "download": "Download",
     "download-all": "Download all",
     "records": "Files",
-    "upload": "Upload"
+    "upload": "Upload",
+    "size": "Size",
+    "bytes": "bytes"
   },
   "about": {
     "title": "About",
