@@ -152,13 +152,23 @@ export default defineComponent({
         await this.saveStorage();
       }
     },
+    recordToBlob(record) {
+      if (record.code !== undefined) {
+        const blob = new Blob([record.code], {
+          type: "application/octet-stream",
+        });
+        return blob;
+      } else {
+        const blob = new Blob([record.data], {
+          type: "application/octet-stream",
+        });
+        return blob;
+      }
+    },
     async downloadRecord(index) {
       const record = this.storage.records[index];
       // Download the file
-      const blob = new Blob([record.code], {
-        type: "application/octet-stream",
-      });
-
+      const blob = this.recordToBlob(record);
       // Use the download attribute to download the file
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
