@@ -178,7 +178,11 @@ export default defineComponent({
     async downloadAll() {
       const zip = new JSZip();
       for (const record of this.storage.records) {
-        zip.file(record.name + "." + record.type, record.code);
+        if (record.type == "py") {
+          zip.file(record.name + "." + record.type, record.code);
+        } else {
+          zip.file(record.name + "." + record.type, record.data);
+        }
       }
       const blob = await zip.generateAsync({ type: "blob" });
       const link = document.createElement("a");
@@ -196,6 +200,8 @@ export default defineComponent({
           // If file name ends with .zip, unzip it
           if (file.name.endsWith(".zip")) {
             this.uploadZip(file);
+          } else if (file.name.endsWith(".py")) {
+            this.uploadScript(file);
           } else {
             this.uploadFile(file);
           }
@@ -203,7 +209,7 @@ export default defineComponent({
       };
       input.click();
     },
-    async uploadFile(file) {
+    async uploadScript(file) {
       const reader = new FileReader();
       reader.readAsText(file);
       reader.addEventListener("load", async () => {
@@ -216,18 +222,43 @@ export default defineComponent({
         this.saveStorage();
       });
     },
+    async uploadFile(file) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.addEventListener("load", async () => {
+        let data = new Blob([reader.result]);
+        const name = file.name.replace(/\.[^/.]+$/, "");
+        const type = file.name.split(".").pop();
+        this.storage.records.push({ name, type, data });
+        await this.calculator.installStorage(this.storage, function () {});
+        console.log("Success");
+        this.saveStorage();
+      });
+    },
     async uploadZip(file) {
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
       reader.addEventListener("load", async () => {
         const zip = await JSZip.loadAsync(reader.result);
         for (const [name, file] of Object.entries(zip.files)) {
-          const code = await file.async("string");
           const type = name.split(".").pop();
           const nameWithoutExtension = name.replace(/\.[^/.]+$/, "");
-          this.storage.records.push({ name: nameWithoutExtension, type, code });
+          if (type === "py") {
+            const code = await file.async("string");
+            this.storage.records.push({
+              name: nameWithoutExtension,
+              type,
+              code,
+            });
+          } else {
+            const data = await file.async("blob");
+            this.storage.records.push({
+              name: nameWithoutExtension,
+              type,
+              data,
+            });
+          }
           console.log(this.storage);
-          console.log(nameWithoutExtension, type, code);
         }
         await this.calculator.installStorage(this.storage, function () {});
         console.log("Success");
