@@ -79,6 +79,15 @@ export default defineComponent({
       for (const record of this.storage.records) {
         if (record.type == "py") {
           size += record.code.length;
+          size += record.name.length + 1 + record.type.length;
+          // We assume it's ASCII (IDK if it work using UTF-8 anyway)
+          // 8 bits header + 16 bits size + \0 name + \0 content
+          size += 1 + 2 + 1 + 1;
+        } else {
+          size += record.data.size;
+          size += record.name.length + 1 + record.type.length;
+          // 8 bits header + 16 bits size + \0 name
+          size += 1 + 2 + 1;
         }
       }
       return size;
