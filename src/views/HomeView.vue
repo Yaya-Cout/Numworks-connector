@@ -76,6 +76,9 @@ export default defineComponent({
   computed: {
     size() {
       let size = 0;
+      if (!this.storage.records) {
+        return "NaN";
+      }
       for (const record of this.storage.records) {
         if (record.type == "py") {
           size += record.code.length;
