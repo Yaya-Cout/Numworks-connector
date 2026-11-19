@@ -13,13 +13,13 @@
     "jszip": "^3.10.1",
     "upsilon.js": "github:Yaya-Cout/Upsilon.js#master",
     "vue": "^3.2.13",
-    "vue-i18n": "^9.14.5",
+    "vue-i18n": "^11.4.23",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "@babel/eslint-parser": "^7.29.7",
-    "@intlify/vue-i18n-loader": "^3.3.0",
+    "@intlify/vue-i18n-loader": "^5.0.1",
     "@vue/cli-plugin-babel": "^5.0.9",
     "@vue/cli-plugin-eslint": "^5.0.9",
     "@vue/cli-plugin-router": "~5.0.0",
